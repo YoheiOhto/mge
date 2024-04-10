@@ -16,5 +16,5 @@ mpi4pyを使用してからconcurrent.futureを使用することは可能
 付属のshellscriptを参考
 
 ## 実行コード
-付属のpyを参考
+付属の実行用shとpyを参考
 実際にそれぞれのノードにcsvを読み込ませて処理をさせている
