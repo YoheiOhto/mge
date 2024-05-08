@@ -1,0 +1,40 @@
+### history ###
+# 220730 v0.1.0 change the structure
+# 220609 update docker-compose and delete version
+# 220421 launched
+
+### note ###
+# ports
+# - <host IP>:<host port>:<container port>
+# command
+# - the path after --bind-addr is the working directory in the container
+# - --port indicates the exposed port
+
+### ToDo ###
+# how to activate extension and save them
+# how to skip authentification
+
+version: '3.6'
+services:
+  cli:
+    build:      
+      context: ./ctn
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VER=${PYTHON_VER}
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: ${BIND_SRC}
+        target: /workspace
+    tty: true
+    stdin_open: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: [gpu]
+        limits:
+          cpus: '0.9'
