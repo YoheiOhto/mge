@@ -1,0 +1,43 @@
+### content ###
+# codeserver container for pytorch-gpu
+
+### history ###
+# 220730 launched
+
+### note ###
+# ports
+# - <host IP>:<host port>:<container port>
+# command
+# - the path after --bind-addr is the working directory in the container
+# - --port indicates the exposed port
+
+### ToDo ###
+# how to activate extension and save them
+# how to skip authentification
+
+services:
+  ctn:
+    build:
+      context: ./ctn
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VER=${PYTHON_VER}
+    restart: always
+    command: code-server --port 8080 --bind-addr=0.0.0.0:8080 /workspace --log debug
+    ports:
+      - '127.0.0.1:${HOST_PORT}:8080'
+    environment:
+      - PASSWORD=${BROWSER_PW}
+    volumes:
+      - type: bind
+        source: ${BIND_SRC}
+        target: /workspace
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: [gpu]
+        limits:
+          cpus: '0.9'
